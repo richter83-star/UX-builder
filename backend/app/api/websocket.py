@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query, Depends
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query, Depends, HTTPException
 from typing import Dict, List, Optional, Any, Set
 import json
 import asyncio
