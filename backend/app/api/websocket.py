@@ -13,7 +13,6 @@ from app.core.risk_manager import risk_manager
 from app.models.database import SessionLocal
 from app.models.schemas import Market, Position, Trade
 from app.models.enums import WebSocketEvent
-from app.api.endpoints.auth import get_current_user_ws
 
 router = APIRouter()
 
