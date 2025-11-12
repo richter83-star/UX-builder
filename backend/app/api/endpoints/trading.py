@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Query, Depends, BackgroundTasks
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta
+import asyncio
 from loguru import logger
 
 from app.core.portfolio import portfolio_manager, TradeExecution
