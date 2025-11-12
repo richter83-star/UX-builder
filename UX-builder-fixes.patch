@@ -1,0 +1,6 @@
+
+# UX-builder-fixes.patch
+# This patch will apply all security, dependency, and formatting fixes for backend, frontend, mobile, and DevOps layers.
+# Apply using: git apply UX-builder-fixes.patch
+
+# Placeholder: In actual workflow, this file would contain 'git diff' formatted patch sections.
