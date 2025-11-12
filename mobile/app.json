@@ -1,0 +1,63 @@
+{
+  "name": "KalshiAgentMobile",
+  "displayName": "Kalshi Agent",
+  "version": "1.0.0",
+  "description": "Mobile app for Kalshi Probability Analysis Agent",
+  "orientation": "portrait",
+  "icon": "./src/assets/icon.png",
+  "splash": {
+    "image": "./src/assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#1a1a2e"
+  },
+  "platforms": {
+    "ios": {
+      "bundleIdentifier": "com.kalshiagent.mobile",
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses location to provide better market insights",
+        "NSFaceIDUsageDescription": "Use Face ID for secure authentication",
+        "NSBiometricUsageDescription": "Use biometrics for secure authentication",
+        "UIStatusBarStyle": "UIStatusBarStyleLightContent",
+        "UIViewControllerBasedStatusBarAppearance": false,
+        "UIBackgroundModes": ["background-fetch", "background-processing"],
+        "UIUserInterfaceStyle": "Dark"
+      }
+    },
+    "android": {
+      "package": "com.kalshiagent.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#1a1a2e"
+      },
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.VIBRATE",
+        "android.permission.WAKE_LOCK",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ],
+      "services": [
+        {
+          "name": "com.kalshiagent.mobile.BackgroundService",
+          "foregroundServiceType": [
+            "dataSync",
+            "location",
+            "mediaPlayback"
+          ]
+        }
+      ]
+    }
+  },
+  "plugins": [
+    "react-native-vector-icons",
+    "react-native-screens",
+    "react-native-safe-area-context",
+    "react-native-gesture-handler"
+  ]
+}
