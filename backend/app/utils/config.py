@@ -1,6 +1,8 @@
-from pydantic_settings import BaseSettings
-from typing import List, Optional
 import os
+from typing import List, Optional
+
+from pydantic import model_validator
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     """Application configuration settings"""
@@ -9,7 +11,7 @@ class Settings(BaseSettings):
     KALSHI_API_KEY: str
     KALSHI_PRIVATE_KEY: str
     KALSHI_ENVIRONMENT: str = "sandbox"
-    KALSHI_BASE_URL: str = "https://demo-api.kalshi.co/v1" if KALSHI_ENVIRONMENT == "sandbox" else "https://trading-api.kalshi.co/v1"
+    KALSHI_BASE_URL: Optional[str] = None
 
     # Database Configuration
     DATABASE_URL: str
@@ -85,8 +87,18 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
 
+    @model_validator(mode="after")
+    def set_default_kalshi_base_url(self):
+        """Ensure Kalshi base URL aligns with the configured environment."""
+        if not self.KALSHI_BASE_URL:
+            sandbox_url = "https://demo-api.kalshi.co/v1"
+            production_url = "https://trading-api.kalshi.co/v1"
+            self.KALSHI_BASE_URL = sandbox_url if self.KALSHI_ENVIRONMENT == "sandbox" else production_url
+        return self
+
 # Create settings instance
 settings = Settings()
 
 # Create logs directory if it doesn't exist
 os.makedirs(os.path.dirname(settings.LOG_FILE), exist_ok=True)
+
