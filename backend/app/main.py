@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
@@ -65,6 +65,7 @@ async def health_check():
         }
     )
 
+
 @app.get("/")
 async def root():
     """Root endpoint"""
@@ -79,7 +80,7 @@ async def root():
 
 # Exception handlers
 @app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
+async def global_exception_handler(request: Request, exc: Exception):
     """Global exception handler"""
     logger.error(f"Unhandled exception: {str(exc)}")
     return JSONResponse(
