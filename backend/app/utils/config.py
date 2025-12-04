@@ -1,7 +1,7 @@
 import os
 from typing import List, Optional
 
-from pydantic import model_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     # Database Configuration
     DATABASE_URL: str
     REDIS_URL: str = "redis://localhost:6379/0"
+
+    # Database lifecycle
+    AUTO_CREATE_TABLES: bool = False
 
     # Security
     SECRET_KEY: str
@@ -86,6 +89,16 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+
+    @field_validator("CORS_ORIGINS", mode="after")
+    @classmethod
+    def validate_cors_origins(cls, origins: List[str]):
+        """Ensure CORS origins are explicitly whitelisted and do not allow wildcards."""
+        if not origins:
+            raise ValueError("CORS_ORIGINS must include at least one allowed origin")
+        if any(origin.strip() == "*" for origin in origins):
+            raise ValueError("CORS_ORIGINS cannot contain wildcard entries ('*') in production")
+        return [origin.strip() for origin in origins]
 
     @model_validator(mode="after")
     def set_default_kalshi_base_url(self):

@@ -18,9 +18,12 @@ async def lifespan(app: FastAPI):
     """Application lifespan events"""
     logger.info("Starting Kalshi Probability Analysis Agent")
 
-    # Create database tables
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables created successfully")
+    # Create database tables in non-production environments when explicitly enabled
+    if settings.AUTO_CREATE_TABLES:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database tables created successfully (auto-create enabled)")
+    else:
+        logger.info("Skipping automatic table creation; run migrations instead")
 
     yield
 

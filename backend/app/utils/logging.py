@@ -1,7 +1,7 @@
 import sys
-import os
 from loguru import logger
 from app.utils.config import settings
+
 
 def setup_logging():
     """Setup application logging configuration"""
