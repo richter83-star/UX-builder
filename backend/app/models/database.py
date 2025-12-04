@@ -28,4 +28,4 @@ def get_db():
         db.close()
 
 # Import all models to ensure they are registered with Base
-from .schemas import *
+from . import schemas  # noqa: F401

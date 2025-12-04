@@ -393,6 +393,35 @@ export interface PaginatedResponse<T> {
   has_prev: boolean;
 }
 
+// Watchlist / rules
+export interface WatchlistEntry {
+  market_ticker: string;
+  tracked_at: string;
+  expires_at: string;
+  alerts_enabled: boolean;
+  decision_trace: string;
+  effective_rules: Record<string, any>;
+}
+
+export interface OverridePayload {
+  alerts_enabled?: boolean;
+  edge_threshold?: number;
+  min_liquidity?: number;
+  max_spread?: number;
+  channels_json?: Record<string, boolean>;
+}
+
+export interface RuleDefaults {
+  alerts_enabled_default: boolean;
+  edge_threshold_default: number;
+  max_alerts_per_day: number;
+  digest_mode: string;
+  digest_time?: string;
+  channels_json?: Record<string, boolean>;
+  min_liquidity?: number;
+  max_spread?: number;
+}
+
 // Store/State Types
 export interface AuthState {
   user: User | null;

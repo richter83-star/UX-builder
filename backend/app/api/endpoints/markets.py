@@ -6,7 +6,7 @@ from loguru import logger
 
 from app.core.kalshi_client import kalshi_client
 from app.models.database import get_db, SessionLocal
-from app.models.schemas import Market, MarketPrice
+from app.models.schemas import Market, MarketPrice, MarketAccess
 from app.models.enums import MarketCategory, MarketStatus
 from app.api.endpoints.auth import get_current_user
 from app.models.schemas import User
@@ -25,6 +25,8 @@ class MarketResponse(BaseModel):
     volume: Optional[int] = None
     created_at: datetime
     updated_at: datetime
+    access_status: Optional[str] = None
+    can_track: bool = False
 
 class MarketDetailResponse(MarketResponse):
     description: Optional[str] = None
@@ -121,6 +123,11 @@ async def get_markets(
                     current_price = None
                     volume = None
 
+                access = db.query(MarketAccess).filter(
+                    MarketAccess.user_id == current_user.id,
+                    MarketAccess.market_ticker == existing_market.market_id
+                ).first()
+
                 saved_markets.append(MarketResponse(
                     market_id=existing_market.market_id,
                     title=existing_market.title,
@@ -131,7 +138,9 @@ async def get_markets(
                     current_price=current_price,
                     volume=volume,
                     created_at=existing_market.created_at,
-                    updated_at=existing_market.updated_at
+                    updated_at=existing_market.updated_at,
+                    access_status=access.status if access else None,
+                    can_track=bool(access and access.status == 'active')
                 ))
 
             except Exception as e:

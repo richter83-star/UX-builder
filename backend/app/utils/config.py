@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional
+from typing import ClassVar, List, Optional
 
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings
@@ -8,20 +8,20 @@ class Settings(BaseSettings):
     """Application configuration settings"""
 
     # Kalshi API Configuration
-    KALSHI_API_KEY: str
-    KALSHI_PRIVATE_KEY: str
+    KALSHI_API_KEY: str = "test"
+    KALSHI_PRIVATE_KEY: str = "test"
     KALSHI_ENVIRONMENT: str = "sandbox"
     KALSHI_BASE_URL: Optional[str] = None
 
     # Database Configuration
-    DATABASE_URL: str
+    DATABASE_URL: str = "sqlite:///:memory:"
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # Database lifecycle
     AUTO_CREATE_TABLES: bool = False
 
     # Security
-    SECRET_KEY: str
+    SECRET_KEY: str = "dev"
     CORS_ORIGINS: List[str] = ["http://localhost:3000"]
 
     # External API Keys
@@ -42,6 +42,8 @@ class Settings(BaseSettings):
     MAX_DAILY_TRADES: int = 10
     ENABLE_AUTO_TRADING: bool = False
     MIN_CONFIDENCE_THRESHOLD: float = 60.0
+    TRADING_MODE: str = "signals"
+    HEARTBEAT_INTERVAL_SECONDS: int = 300
 
     # Logging
     LOG_LEVEL: str = "INFO"
@@ -57,7 +59,7 @@ class Settings(BaseSettings):
     MAX_HISTORICAL_DAYS: int = 365
 
     # Risk Profiles Configuration
-    RISK_PROFILES = {
+    RISK_PROFILES: ClassVar[dict] = {
         "conservative": {
             "max_position_size_percent": 2.0,
             "kelly_fraction": 0.1,
@@ -75,7 +77,7 @@ class Settings(BaseSettings):
         }
     }
 
-    DEFAULT_RISK_CONFIG = {
+    DEFAULT_RISK_CONFIG: ClassVar[dict] = {
         "max_position_size_percent": 5.0,
         "max_category_exposure_percent": 20.0,
         "daily_loss_limit_percent": 2.0,

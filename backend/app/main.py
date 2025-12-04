@@ -7,8 +7,10 @@ import uvicorn
 from app.utils.config import settings
 from app.utils.logging import setup_logging
 from app.api.endpoints import markets, analysis, trading, auth
+from app.api.endpoints import watchlist, rules, admin, market_requests
 from app.api.websocket import websocket_router
 from app.models.database import engine, Base
+from app.core.tasks import start_background_jobs
 
 # Setup logging
 logger = setup_logging()
@@ -24,6 +26,11 @@ async def lifespan(app: FastAPI):
         logger.info("Database tables created successfully (auto-create enabled)")
     else:
         logger.info("Skipping automatic table creation; run migrations instead")
+
+    # Start background maintenance
+    import asyncio
+
+    asyncio.create_task(start_background_jobs())
 
     yield
 
@@ -53,6 +60,10 @@ app.include_router(auth.router, prefix="/api/auth", tags=["authentication"])
 app.include_router(markets.router, prefix="/api/markets", tags=["markets"])
 app.include_router(analysis.router, prefix="/api/analysis", tags=["analysis"])
 app.include_router(trading.router, prefix="/api/trading", tags=["trading"])
+app.include_router(watchlist.router, prefix="/api/watchlist", tags=["watchlist"])
+app.include_router(rules.router, prefix="/api/rules", tags=["rules"])
+app.include_router(admin.router, prefix="/api/admin", tags=["admin"])
+app.include_router(market_requests.router, prefix="/api/market-requests", tags=["market-requests"])
 app.include_router(websocket_router, prefix="/ws")
 
 # Health check endpoint

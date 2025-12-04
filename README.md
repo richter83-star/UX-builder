@@ -385,3 +385,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **⚠️ Disclaimer**: This software is for educational and research purposes. Trading prediction markets involves substantial risk. Past performance is not indicative of future results. Always do your own research and trade responsibly.
+## Early access operations
+
+Run the lightweight migration helper to create watchlist/risk tables:
+
+```bash
+cd backend
+python -c "from app.models.migrations import run_migrations; run_migrations()"
+```
+
+Run targeted tests:
+
+```bash
+cd backend
+pytest
+```

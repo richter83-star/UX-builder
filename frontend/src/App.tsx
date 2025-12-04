@@ -7,6 +7,8 @@ import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
 import Markets from './components/Markets';
+import Watchlist from './components/Watchlist';
+import AlertsSettings from './components/AlertsSettings';
 import Analysis from './components/Analysis';
 import Trading from './components/Trading';
 import Portfolio from './components/Portfolio';
@@ -16,7 +18,6 @@ import Register from './components/Register';
 import NotFound from './components/NotFound';
 
 import useAuthStore from './hooks/useAuth';
-import webSocketService from './services/websocket';
 
 import './App.css';
 
@@ -55,7 +56,7 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const App: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-  const { isAuthenticated, user, initializeAuth } = useAuthStore();
+  const { isAuthenticated, initializeAuth } = useAuthStore();
 
   useEffect(() => {
     setMounted(true);
@@ -63,33 +64,8 @@ const App: React.FC = () => {
   }, [initializeAuth]);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        // Setup WebSocket connection
-        webSocketService.connect(user.id, token, {
-          onConnect: () => {
-            console.log('WebSocket connected in App component');
-          },
-          onDisconnect: () => {
-            console.log('WebSocket disconnected in App component');
-          },
-          onError: (error) => {
-            console.error('WebSocket error in App component:', error);
-          },
-          onMessage: (message) => {
-            console.log('WebSocket message in App component:', message);
-          },
-        });
-      }
-    }
-
-    return () => {
-      if (isAuthenticated) {
-        webSocketService.disconnect();
-      }
-    };
-  }, [isAuthenticated, user]);
+    // WebSocket setup can be added when live automation is enabled
+  }, [isAuthenticated]);
 
   // Don't render until mounted (prevents hydration issues)
   if (!mounted) {
@@ -156,9 +132,9 @@ const App: React.FC = () => {
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="markets" element={<Markets />} />
-                <Route path="markets/:marketId" element={<Markets />} />
+                <Route path="watchlist" element={<Watchlist />} />
+                <Route path="alerts" element={<AlertsSettings />} />
                 <Route path="analysis" element={<Analysis />} />
-                <Route path="analysis/:marketId" element={<Analysis />} />
                 <Route path="trading" element={<Trading />} />
                 <Route path="portfolio" element={<Portfolio />} />
                 <Route path="risk-settings" element={<RiskSettings />} />

@@ -56,6 +56,44 @@ class WebSocketEvent(str, Enum):
     RISK_ALERT = "risk_alert"
     CONNECTION_STATUS = "connection_status"
 
+
+class AccessSource(str, Enum):
+    BASELINE = "baseline"
+    REQUESTED = "requested"
+    ADMIN = "admin"
+
+
+class AccessStatus(str, Enum):
+    ACTIVE = "active"
+    PENDING = "pending"
+    REJECTED = "rejected"
+    EXPIRED = "expired"
+
+
+class MarketRequestStatus(str, Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class KillState(str, Enum):
+    NONE = "none"
+    SOFT = "soft"
+    HARD = "hard"
+
+
+class DecisionReason(str, Enum):
+    ALLOWED = "allowed"
+    TRADING_DISABLED = "trading_disabled"
+    DAILY_CAP_REACHED = "daily_cap_reached"
+    PER_MARKET_CAP_REACHED = "per_market_cap_reached"
+    TOO_MANY_POSITIONS = "too_many_positions"
+    KILL_HARD = "kill_hard"
+    SOFT_THROTTLE = "soft_throttle"
+    REQUEST_PENDING = "request_pending"
+    ACCESS_DENIED = "access_denied"
+    HEARTBEAT_ONLY = "heartbeat_only"
+
 # Constants
 DEFAULT_PAGE_SIZE = 50
 MAX_PAGE_SIZE = 100
