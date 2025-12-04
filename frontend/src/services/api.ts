@@ -200,6 +200,80 @@ class ApiService {
     }
   }
 
+  // Watchlist endpoints
+  async getWatchlist(): Promise<any> {
+    try {
+      const response = await this.api.get('/api/watchlist/');
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async trackMarket(marketTicker: string): Promise<any> {
+    try {
+      const response = await this.api.post(`/api/watchlist/${marketTicker}`);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async untrackMarket(marketTicker: string): Promise<any> {
+    try {
+      const response = await this.api.post(`/api/watchlist/${marketTicker}/untrack`);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async getOverride(marketTicker: string): Promise<any> {
+    try {
+      const response = await this.api.get(`/api/watchlist/${marketTicker}/override`);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async saveOverride(marketTicker: string, payload: any): Promise<any> {
+    try {
+      const response = await this.api.put(`/api/watchlist/${marketTicker}/override`, payload);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  // Rules
+  async getRules(): Promise<any> {
+    try {
+      const response = await this.api.get('/api/rules/');
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async updateRules(payload: any): Promise<any> {
+    try {
+      const response = await this.api.put('/api/rules/', payload);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
+  async requestMarket(payload: any): Promise<any> {
+    try {
+      const response = await this.api.post('/api/market-requests/', payload);
+      return response.data;
+    } catch (error) {
+      return this.handleError(error as AxiosError);
+    }
+  }
+
   async getMarketCategories(): Promise<any> {
     try {
       const response = await this.api.get('/api/markets/categories/list');
