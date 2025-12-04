@@ -5,7 +5,7 @@ from azure.core.credentials import AzureKeyCredential
 
 endpoint = "https://models.github.ai/inference"
 model = "openai/gpt-4.1"
-token = os.environ["GITHUB_TOKEN"]
+token = os.environ["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"]
 
 client = ChatCompletionsClient(
     endpoint=endpoint,
