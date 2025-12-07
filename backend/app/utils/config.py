@@ -1,8 +1,9 @@
 import os
 from typing import ClassVar, List, Optional
 
-from pydantic import field_validator, model_validator
+from pydantic import ConfigDict, field_validator, model_validator
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     """Application configuration settings"""
@@ -63,18 +64,18 @@ class Settings(BaseSettings):
         "conservative": {
             "max_position_size_percent": 2.0,
             "kelly_fraction": 0.1,
-            "min_confidence_threshold": 75.0
+            "min_confidence_threshold": 75.0,
         },
         "moderate": {
             "max_position_size_percent": 5.0,
             "kelly_fraction": 0.25,
-            "min_confidence_threshold": 60.0
+            "min_confidence_threshold": 60.0,
         },
         "aggressive": {
             "max_position_size_percent": 10.0,
             "kelly_fraction": 0.5,
-            "min_confidence_threshold": 50.0
-        }
+            "min_confidence_threshold": 50.0,
+        },
     }
 
     DEFAULT_RISK_CONFIG: ClassVar[dict] = {
@@ -85,12 +86,10 @@ class Settings(BaseSettings):
         "stop_loss_percent": 10.0,
         "max_correlation": 0.7,
         "max_daily_trades": 10,
-        "min_confidence_threshold": 60.0
+        "min_confidence_threshold": 60.0,
     }
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = ConfigDict(env_file=".env", case_sensitive=True)
 
     @field_validator("CORS_ORIGINS", mode="after")
     @classmethod
@@ -111,9 +110,9 @@ class Settings(BaseSettings):
             self.KALSHI_BASE_URL = sandbox_url if self.KALSHI_ENVIRONMENT == "sandbox" else production_url
         return self
 
+
 # Create settings instance
 settings = Settings()
 
 # Create logs directory if it doesn't exist
 os.makedirs(os.path.dirname(settings.LOG_FILE), exist_ok=True)
-

@@ -1,9 +1,5 @@
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.dialects.postgresql import UUID
-from datetime import datetime
-import uuid
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.utils.config import settings
 
@@ -19,6 +15,7 @@ Base = declarative_base()
 # Metadata for migrations
 metadata = MetaData()
 
+
 def get_db():
     """Dependency to get database session"""
     db = SessionLocal()
@@ -26,6 +23,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 # Import all models to ensure they are registered with Base
 from . import schemas  # noqa: F401
