@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Card, List, Button, Drawer, Space, Switch, InputNumber, Tag, Typography, Progress } from 'antd';
+import { Alert, Card, List, Button, Drawer, Space, Switch, InputNumber, Tag, Typography } from 'antd';
 import apiService from '../services/api';
 import { WatchlistEntry, OverridePayload } from '../types';
+import { useCopy } from '../hooks/useCopy';
 
 const { Title, Text } = Typography;
 
@@ -10,6 +11,7 @@ const Watchlist: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [openTicker, setOpenTicker] = useState<string | null>(null);
   const [override, setOverride] = useState<OverridePayload>({});
+  const { copy } = useCopy();
 
   const load = async () => {
     setLoading(true);
@@ -43,19 +45,30 @@ const Watchlist: React.FC = () => {
   const cap = 25;
 
   return (
-    <Card title={<Title level={4}>Watchlist ({trackedCount}/{cap})</Title>} loading={loading}>
+    <Card
+      title={
+        <Space align="center">
+          <Title level={4} style={{ margin: 0 }}>
+            {copy.watchlist.title}
+          </Title>
+          <Text type="secondary">({trackedCount}/{cap})</Text>
+        </Space>
+      }
+      loading={loading}
+    >
+      <Alert type="warning" message={copy.watchlist.warning} style={{ marginBottom: 16 }} />
       <List
         dataSource={entries}
         renderItem={(item) => (
           <List.Item
-            actions=[
+            actions={[
               <Button key="override" onClick={() => openOverride(item.market_ticker)}>
                 ⚙ Override
               </Button>,
               <Tag key="trace" color={item.decision_trace.includes('blocked') ? 'red' : 'blue'}>
                 {item.decision_trace}
               </Tag>,
-            ]
+            ]}
           >
             <List.Item.Meta
               title={item.market_ticker}

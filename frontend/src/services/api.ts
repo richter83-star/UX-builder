@@ -15,9 +15,7 @@ import {
   RiskAssessment,
   RiskMetrics,
   AnalysisSummary,
-  PerformanceMetrics,
-  ApiResponse,
-  PaginatedResponse
+  PerformanceMetrics
 } from '../types';
 
 class ApiService {
