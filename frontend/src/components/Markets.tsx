@@ -47,7 +47,7 @@ const Markets: React.FC = () => {
         dataSource={markets}
         renderItem={(item) => (
           <List.Item
-            actions=[
+            actions={[
               item.can_track ? (
                 <Button type="primary" onClick={() => handleTrack(item.market_id, item.can_track)}>
                   Track
@@ -55,7 +55,7 @@ const Markets: React.FC = () => {
               ) : (
                 <Button onClick={() => handleRequest(item.market_id)}>Request access</Button>
               )
-            ]
+            ]}
           >
             <List.Item.Meta
               title={
