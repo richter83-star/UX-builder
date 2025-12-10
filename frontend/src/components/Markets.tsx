@@ -23,7 +23,7 @@ const Markets: React.FC = () => {
     fetchMarkets();
   }, [query]);
 
-  const handleTrack = async (ticker: string, canTrack: boolean) => {
+  const handleTrack = async (ticker: string, canTrack = false) => {
     if (!canTrack) return;
     await apiService.trackMarket(ticker);
     setMarkets((prev) =>

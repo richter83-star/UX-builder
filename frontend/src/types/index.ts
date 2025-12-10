@@ -37,6 +37,8 @@ export interface Market {
   status: string;
   current_price?: number;
   volume?: number;
+  can_track?: boolean;
+  access_status?: string;
   created_at: string;
   updated_at: string;
 }
@@ -259,7 +261,9 @@ export type WebSocketEventType =
   | 'position_update'
   | 'trade_executed'
   | 'risk_alert'
-  | 'connection_status';
+  | 'connection_status'
+  | 'ping'
+  | 'pong';
 
 export interface WebSocketMessage {
   type: WebSocketEventType;
