@@ -18,7 +18,7 @@ import Register from './components/Register';
 import NotFound from './components/NotFound';
 import { CopyProvider } from './hooks/useCopy';
 
-import useAuthStore from './hooks/useAuth';
+import { useAuthStore } from './hooks/useAuth';
 
 import './App.css';
 

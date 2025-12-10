@@ -18,8 +18,10 @@ import {
   PerformanceMetrics
 } from '../types';
 
+type ApiError = AxiosError<{ detail?: string }>;
+
 class ApiService {
-  private api: AxiosInstance;
+  public readonly api: AxiosInstance;
 
   constructor() {
     this.api = axios.create({
@@ -60,7 +62,7 @@ class ApiService {
   }
 
   // Generic error handler
-  private handleError(error: AxiosError): Promise<never> {
+  private handleError(error: ApiError): Promise<never> {
     const message = error.response?.data?.detail || error.message || 'An unexpected error occurred';
     return Promise.reject(new Error(message));
   }
@@ -77,7 +79,7 @@ class ApiService {
 
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -92,7 +94,7 @@ class ApiService {
 
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -112,7 +114,7 @@ class ApiService {
       const response = await this.api.get('/api/auth/me');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -120,7 +122,7 @@ class ApiService {
     try {
       await this.api.put('/api/auth/profile', profileData);
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -136,7 +138,7 @@ class ApiService {
       const response = await this.api.get('/api/markets/', { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -148,7 +150,7 @@ class ApiService {
       const response = await this.api.get(`/api/markets/${marketId}`, { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -161,7 +163,7 @@ class ApiService {
       const response = await this.api.get(`/api/markets/${marketId}/history`, { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -170,7 +172,7 @@ class ApiService {
       const response = await this.api.get(`/api/markets/${marketId}/price`);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -183,7 +185,7 @@ class ApiService {
       const response = await this.api.get('/api/markets/search', { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -194,7 +196,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -204,7 +206,7 @@ class ApiService {
       const response = await this.api.get('/api/watchlist/');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -213,7 +215,7 @@ class ApiService {
       const response = await this.api.post(`/api/watchlist/${marketTicker}`);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -222,7 +224,7 @@ class ApiService {
       const response = await this.api.post(`/api/watchlist/${marketTicker}/untrack`);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -231,7 +233,7 @@ class ApiService {
       const response = await this.api.get(`/api/watchlist/${marketTicker}/override`);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -240,7 +242,7 @@ class ApiService {
       const response = await this.api.put(`/api/watchlist/${marketTicker}/override`, payload);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -250,7 +252,7 @@ class ApiService {
       const response = await this.api.get('/api/rules/');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -259,7 +261,7 @@ class ApiService {
       const response = await this.api.put('/api/rules/', payload);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -268,7 +270,7 @@ class ApiService {
       const response = await this.api.post('/api/market-requests/', payload);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -277,7 +279,7 @@ class ApiService {
       const response = await this.api.get('/api/markets/categories/list');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -290,7 +292,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -304,7 +306,7 @@ class ApiService {
       const response = await this.api.get('/api/analysis/opportunities', { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -315,7 +317,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -326,7 +328,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -335,7 +337,7 @@ class ApiService {
       const response = await this.api.get('/api/analysis/performance/metrics');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -346,7 +348,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -358,7 +360,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -371,7 +373,7 @@ class ApiService {
       const response = await this.api.get('/api/trading/positions', { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -380,7 +382,7 @@ class ApiService {
       const response = await this.api.get(`/api/trading/positions/${positionId}`);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -391,7 +393,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -407,7 +409,7 @@ class ApiService {
       const response = await this.api.get('/api/trading/history', { params });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -416,7 +418,7 @@ class ApiService {
       const response = await this.api.get('/api/trading/portfolio/metrics');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -427,7 +429,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -436,7 +438,7 @@ class ApiService {
       const response = await this.api.get('/api/trading/portfolio/allocation');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -452,7 +454,7 @@ class ApiService {
       const response = await this.api.post('/api/trading/risk/assess', request);
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -461,7 +463,7 @@ class ApiService {
       const response = await this.api.get('/api/trading/risk/metrics');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -472,7 +474,7 @@ class ApiService {
       });
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -482,7 +484,7 @@ class ApiService {
       const response = await this.api.get('/health');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 
@@ -492,7 +494,7 @@ class ApiService {
       const response = await this.api.get('/ws/stats');
       return response.data;
     } catch (error) {
-      return this.handleError(error as AxiosError);
+      return this.handleError(error as ApiError);
     }
   }
 }

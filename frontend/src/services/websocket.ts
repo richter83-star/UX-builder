@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { WebSocketMessage, WebSocketEventType } from '../types';
+import { WebSocketMessage } from '../types';
 
 export interface WebSocketCallbacks {
   onConnect?: () => void;
@@ -59,7 +59,6 @@ class WebSocketService {
       this.socket = io(url, {
         transports: ['websocket'],
         upgrade: false,
-        rememberTransport: false,
         timeout: 20000,
         forceNew: true,
       });
@@ -143,31 +142,31 @@ class WebSocketService {
 
     // Route to specific handlers based on message type
     switch (message.type) {
-      case WebSocketEventType.MARKET_UPDATE:
+      case 'market_update':
         this.callbacks.onMarketUpdate?.(message.data);
         break;
 
-      case WebSocketEventType.POSITION_UPDATE:
+      case 'position_update':
         this.callbacks.onPositionUpdate?.(message.data);
         break;
 
-      case WebSocketEventType.OPPORTUNITY_ALERT:
+      case 'opportunity_alert':
         this.callbacks.onOpportunityAlert?.(message.data);
         break;
 
-      case WebSocketEventType.TRADE_EXECUTED:
+      case 'trade_executed':
         this.callbacks.onTradeExecuted?.(message.data);
         break;
 
-      case WebSocketEventType.RISK_ALERT:
+      case 'risk_alert':
         this.callbacks.onRiskAlert?.(message.data);
         break;
 
-      case WebSocketEventType.ANALYSIS_UPDATE:
+      case 'analysis_update':
         // Handle analysis updates if needed
         break;
 
-      case WebSocketEventType.CONNECTION_STATUS:
+      case 'connection_status':
         console.log('Connection status update:', message.data);
         break;
 
