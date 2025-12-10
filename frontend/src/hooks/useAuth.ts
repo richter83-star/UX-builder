@@ -212,3 +212,5 @@ export const useAuthActions = () => {
     setLoading: store.setLoading,
   };
 };
+
+export default useAuthStore;
