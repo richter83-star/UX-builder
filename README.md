@@ -127,6 +127,8 @@ A sophisticated probability analysis agent that integrates with Kalshi predictio
 # Kalshi API Configuration
 KALSHI_API_KEY=your_api_key_here
 KALSHI_PRIVATE_KEY=your_private_key_here
+KALSHI_PRIVATE_KEY_FILE=/optional/path/to/private_key.pem
+KALSHI_PRIVATE_KEY_BASE64=optional_base64_encoded_private_key
 KALSHI_ENVIRONMENT=sandbox  # sandbox or production
 
 # Database Configuration
@@ -167,6 +169,7 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
    openssl rsa -in private_key.pem -pubout -out public_key.pem
    ```
 4. **Upload public key** to Kalshi and configure API access
+5. **Handling Docker Compose .env files**: multiline private keys can break parsing. Either mount a key file and set `KALSHI_PRIVATE_KEY_FILE`, or encode your key to a single line and set `KALSHI_PRIVATE_KEY_BASE64` (e.g., `base64 -w0 private_key.pem`).
 
 ## 📊 Usage
 
