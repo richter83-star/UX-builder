@@ -136,7 +136,8 @@ docker-compose up -d
 
    # Or use Docker:
    docker run --name kalshi_postgres -e POSTGRES_DB=kalshi_agent -e POSTGRES_USER=kalshi_user -e POSTGRES_PASSWORD=kalshi_password -p 5432:5432 -d postgres:14-alpine
-   docker run --name kalshi_redis -p 6379:6379 -d redis:7-alpine redis-server --requirepass redis_password
+   REDIS_PASSWORD=redis_password
+   docker run --name kalshi_redis -p 6379:6379 -d redis:7-alpine redis-server --requirepass ${REDIS_PASSWORD}
    ```
 
 2. **Configure Kalshi API Credentials**

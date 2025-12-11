@@ -119,7 +119,8 @@ if command -v redis-server &> /dev/null; then
     print_status "Redis found ✓"
 else
     print_warning "Redis not found. Please install Redis or use Docker:"
-    echo "docker run --name kalshi_redis -p 6379:6379 -d redis:7-alpine redis-server --requirepass redis_password"
+    echo "REDIS_PASSWORD=redis_password"
+    echo "docker run --name kalshi_redis -p 6379:6379 -d redis:7-alpine redis-server --requirepass \${REDIS_PASSWORD}"
 fi
 
 # Create startup scripts
