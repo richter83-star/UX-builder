@@ -1,4 +1,6 @@
+import base64
 import os
+from pathlib import Path
 from typing import ClassVar, List, Optional
 
 from pydantic import ConfigDict, field_validator, model_validator
@@ -11,6 +13,8 @@ class Settings(BaseSettings):
     # Kalshi API Configuration
     KALSHI_API_KEY: str = "test"
     KALSHI_PRIVATE_KEY: str = "test"
+    KALSHI_PRIVATE_KEY_FILE: Optional[str] = None
+    KALSHI_PRIVATE_KEY_BASE64: Optional[str] = None
     KALSHI_ENVIRONMENT: str = "sandbox"
     KALSHI_BASE_URL: Optional[str] = None
 
@@ -108,6 +112,26 @@ class Settings(BaseSettings):
             sandbox_url = "https://demo-api.kalshi.co/v1"
             production_url = "https://trading-api.kalshi.co/v1"
             self.KALSHI_BASE_URL = sandbox_url if self.KALSHI_ENVIRONMENT == "sandbox" else production_url
+        return self
+
+    @model_validator(mode="after")
+    def load_private_key(self):
+        """Load Kalshi private key from file or base64 value when provided."""
+        if self.KALSHI_PRIVATE_KEY_FILE:
+            key_path = Path(self.KALSHI_PRIVATE_KEY_FILE)
+            if not key_path.is_file():
+                raise ValueError(f"KALSHI_PRIVATE_KEY_FILE not found: {key_path}")
+            self.KALSHI_PRIVATE_KEY = key_path.read_text()
+            return self
+
+        if self.KALSHI_PRIVATE_KEY_BASE64:
+            try:
+                decoded_key = base64.b64decode(self.KALSHI_PRIVATE_KEY_BASE64).decode("utf-8")
+            except Exception as exc:  # noqa: BLE001
+                raise ValueError("Invalid base64 encoding for KALSHI_PRIVATE_KEY_BASE64") from exc
+            self.KALSHI_PRIVATE_KEY = decoded_key
+            return self
+
         return self
 
 
