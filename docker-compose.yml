@@ -27,16 +27,18 @@ services:
   redis:
     image: redis:7-alpine
     container_name: kalshi_redis
-    command: redis-server --appendonly yes --requirepass redis_password
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_password}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
     volumes:
       - redis_data:/data
     ports:
-      - "6379:6379"
+      - "${REDIS_HOST_PORT:-6380}:6379"
     networks:
       - kalshi_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_password}", "--raw", "PING"]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -50,7 +52,8 @@ services:
     environment:
       # Database Configuration
       DATABASE_URL: postgresql://kalshi_user:kalshi_password@postgres:5432/kalshi_agent
-      REDIS_URL: redis://:redis_password@redis:6379/0
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_password}@redis:6379/0
 
       # Security
       SECRET_KEY: ${SECRET_KEY:-your_super_secret_key_change_in_production}

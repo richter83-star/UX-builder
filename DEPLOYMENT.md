@@ -105,7 +105,8 @@ KALSHI_ENVIRONMENT=sandbox
 
 # Database
 DATABASE_URL=postgresql://kalshi_user:kalshi_password@postgres:5432/kalshi_agent
-REDIS_URL=redis://:redis_password@redis:6379/0
+REDIS_PASSWORD=redis_password
+REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
 
 # External APIs (Optional)
 NEWS_API_KEY=your_news_api_key
@@ -186,7 +187,7 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kalshi_agent TO kalsh
 # Using Docker
 docker run --name kalshi_redis \
   -p 6379:6379 \
-  -d redis:7-alpine redis-server --requirepass redis_password
+  -d redis:7-alpine redis-server --requirepass ${REDIS_PASSWORD:-redis_password}
 
 # Using package manager
 # Ubuntu/Debian:
