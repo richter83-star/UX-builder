@@ -63,6 +63,8 @@ A sophisticated probability analysis agent that integrates with Kalshi predictio
    docker-compose --profile monitoring up -d
    ```
 
+   > **Note:** Redis now binds to `${REDIS_HOST_PORT:-6380}` to avoid conflicts with local Redis instances. Set `REDIS_HOST_PORT=6379` (or another open port) in your `.env` if you need a different mapping.
+
 4. **Access the application**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
